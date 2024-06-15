@@ -41,9 +41,9 @@ class Ui_MainWindow(object):
         results = imageDetector.predict(self.label_img_path)
 
         qimage = self.label.pixmap().toImage()
-        qimage.save(os.path.join(os.getcwd(), "tmp\\qimage.png"))
+        qimage.save(os.path.join(os.getcwd(), "tmp/qimage.png"))
 
-        pil_img_path = os.path.join(os.getcwd(), "tmp\\qimage.png")
+        pil_img_path = os.path.join(os.getcwd(), "tmp/qimage.png")
         pil_image = Image.open(pil_img_path)
         draw = ImageDraw.Draw(pil_image)
 
@@ -73,7 +73,7 @@ class Ui_MainWindow(object):
     def start_camera(self):
         self.cap = cv2.VideoCapture(0)
         self.timer.timeout.connect(self.update_frame)
-        self.timer.start(10)
+        self.timer.start(30)
 
     def stop_camera(self):
         self.timer.stop()
