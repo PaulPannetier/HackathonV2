@@ -111,26 +111,26 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(10, 10, 541, 461))
+        self.label.setGeometry(QRect(30, 70, 541, 480))
         self.label_img_path = u"BottleMaps/000003_jpg.rf.717a772246ebd76a5719aa5868950699.jpg"
         self.label.setPixmap(QPixmap(self.label_img_path))
         self.label.setScaledContents(True)
         self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
-        self.label_2.setGeometry(QRect(570, 10, 531, 591))
+        self.label_2.setGeometry(QRect(580, 10, 520, 591))
         self.label_2.setPixmap(QPixmap(u"BottleMaps/maps.png"))
         self.label_2.setScaledContents(True)
         from BottleMaps.bottleMaps import bottleMaps
         bottleMaps.save_map()
         self.pushButton = QPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setGeometry(QRect(30, 480, 151, 31))
+        self.pushButton.setGeometry(QRect(310, 600, 205, 31))
         self.pushButton.clicked.connect(self.on_compute_button_down)
         self.comboBox = QComboBox(self.centralwidget)
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.setObjectName(u"comboBox")
-        self.comboBox.setGeometry(QRect(240, 480, 151, 31))
+        self.comboBox.setGeometry(QRect(60, 600, 181, 31))
         self.comboBox.setMaxVisibleItems(2)
         self.comboBox.currentIndexChanged.connect(self.on_combobox_changed)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -147,23 +147,30 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
-
+        self.menuFile.setStyleSheet("background-color:#494b4a;")
+        self.menuAbout.setStyleSheet("background-color:#494b4a;")
         self.retranslateUi(MainWindow)
         self.comboBox.setCurrentIndex(0)
         QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("Béatrice", u"Béatrice", None))
+        MainWindow.setStyleSheet("background-color:#0f0f53;")
         self.label.setText("")
         self.label_2.setText("")
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Compute", None))
+        self.pushButton.setStyleSheet("background-color:#494b4a;")
         self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Image", None))
         self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Camera", None))
+        self.comboBox.setStyleSheet("background-color:#494b4a;")
 
+        
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
+        
         open_image_menu = self.menuFile.addAction("Open Image")
         open_image_menu.triggered.connect(self.on_open_image_down)
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
+        
     # retranslateUi
 
 ui_MainWindow = Ui_MainWindow()
