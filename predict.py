@@ -9,18 +9,14 @@ class PredictionResult:
     height:float
     confidence:float
     type:str
-    type_id:int
-    prediction_type:str
 
-    def __init__(self, x, y, width, height, confidence, type, type_id, prediction_type):
+    def __init__(self, x, y, width, height, confidence, type):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.confidence = confidence
         self.type = type
-        self.type_id = type_id
-        self.prediction_type = prediction_type
 
 class ImageDetector:
     def __init__(self):
@@ -36,5 +32,7 @@ class ImageDetector:
         for i in range(0, len(result["predictions"])):
             result["predictions"][i].pop("image_path")
             tmp = result["predictions"][i]
-            res.append(PredictionResult(tmp["x"], tmp["y"], tmp["width"], tmp["height"], tmp["confidence"], tmp["class"], tmp["class_id"], tmp["prediction_type"]))
+            if tmp["class"] != "grass" and tmp["class"] != "branch" and tmp["class"] != "leaf":
+                res.append(PredictionResult(tmp["x"], tmp["y"], tmp["width"], tmp["height"], tmp["confidence"], tmp["class"]))
+
         return res
