@@ -32,7 +32,7 @@ class BottleMapsData:
     def __init__(self, wastes:list):
         self.wastes = []
         for waste in wastes:
-            self.wastes.append(TiltedWasteData(waste["x"], waste["y"], waste["type"]))
+            self.wastes.append(TiltedWasteData(float(waste["x"]), float(waste["y"]), waste["type"]))
 
     def add_waste(self, waste:TiltedWasteData) -> None:
         self.wastes.append(waste)
@@ -63,7 +63,7 @@ class BottleMaps:
             json_file_path = os.path.join(os.getcwd(), "BottleMaps/TiltedWasteData.json")
             with open(json_file_path, 'r') as file:
                 dict = json.load(file)
-                self.data = BottleMapsData(dict)
+                self.data = BottleMapsData(dict["wastes"])
         except Exception as e:
             self.data = BottleMapsData([])
 
