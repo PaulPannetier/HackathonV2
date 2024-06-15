@@ -29,10 +29,8 @@ class BottleMapsData:
     
     wastes:list[TiltedWasteData]
 
-    def __init__(self, wastes:list):
+    def __init__(self):
         self.wastes = []
-        for waste in wastes:
-            self.wastes.append(TiltedWasteData(waste["x"], waste["y"], waste["type"]))
 
     def add_waste(self, waste:TiltedWasteData) -> None:
         self.wastes.append(waste)
@@ -60,12 +58,11 @@ class BottleMaps:
 
     def __init__(self):
         try:
-            json_file_path = os.path.join(os.getcwd(), "BottleMaps\\TiltedWasteData.json")
+            json_file_path = os.path.join(os.getcwd(), "BottleMaps/TiltedWasteData.json")
             with open(json_file_path, 'r') as file:
-                dict = json.load(file)
-                self.data = BottleMapsData(dict)
-        except Exception as e:
-            self.data = BottleMapsData([])
+                self.data = BottleMapsData()
+        except:
+            self.data = json.load(file)
 
     def add_waste(self, waste:TiltedWasteData) -> None:
         self.data.add_waste(waste)
@@ -73,12 +70,12 @@ class BottleMaps:
     def save_map(self):
 
         json_string = self.data.json()
-        file_name = os.path.join(os.getcwd(), "BottleMaps\\TiltedWasteData.json")
+        file_name = os.path.join(os.getcwd(), "BottleMaps/TiltedWasteData.json")
 
         with open(file_name, 'w') as file:
             file.write(json_string)
 
-        img_path = os.path.join(os.getcwd(), "BottleMaps\\baseMaps.png")
+        img_path = os.path.join(os.getcwd(), "BottleMaps/basemaps.png")
         image = Image.open(img_path)
         draw = ImageDraw.Draw(image)
         for tiltedWasteData in self.data.wastes:
@@ -87,7 +84,7 @@ class BottleMaps:
             radius = 3
             draw.ellipse((x - radius, y - radius, x + radius, y + radius), fill='red', outline='red')
 
-        image.save(os.path.join(os.getcwd(), "BottleMaps\\maps.png"))
+        image.save(os.path.join(os.getcwd(), "BottleMaps/maps.png"))
 
         ui_MainWindow.label_2.setPixmap(QPixmap(u"BottleMaps/maps.png"))
 

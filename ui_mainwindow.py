@@ -10,7 +10,7 @@
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
+    QSize, QTime, QUrl, Qt, QTimer)
 from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QCursor, QFont, QFontDatabase, QGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
@@ -24,11 +24,16 @@ import os
 from singleton import singleton
 from predict import ImageDetector
 from PIL import Image, ImageDraw
+import cv2
 
 
 @singleton
 class Ui_MainWindow(object):
     label_img_path:str
+
+    def __init__(self):
+        self.cap = None
+        self.timer = QTimer()
 
     def on_compute_button_down(self):
         from BottleMaps.bottleMaps import bottleMaps, TiltedWasteData
@@ -43,15 +48,45 @@ class Ui_MainWindow(object):
         draw = ImageDraw.Draw(pil_image)
 
         for res in results:
-            bottleMaps.add_waste(TiltedWasteData.create(res.x, res.y, res.type))
+            bottleMaps.add_waste(TiltedWasteData(res.x, res.y, res.type))
             draw.rectangle((res.x - (res.width * 0.5), res.y - (res.height * 0.5), res.x + (res.width * 0.5), res.y + (res.height * 0.5)), fill=None, outline='red')
         
         bottleMaps.save_map()
 
-        data = pil_image.tobytes("raw", "RGBA")
+        data = pil_image.convert("RGBA").tobytes("raw", "RGBA")
         qimage = QImage(data, pil_image.width, pil_image.height, QImage.Format_RGBA8888)
         qpixmap = QPixmap.fromImage(qimage)
         self.label.setPixmap(qpixmap)
+
+    def on_combobox_changed(self, index):
+        current_text = self.comboBox.itemText(index)
+        #print(f"Current ComboBox item: {current_text}")
+        if current_text == "Image":
+            self.label.setPixmap(QPixmap(self.label_img_path))
+            self.stop_camera()
+        elif current_text == "Camera":
+            self.start_camera()
+        else:
+            self.label.clear()
+            self.stop_camera()
+
+    def start_camera(self):
+        self.cap = cv2.VideoCapture(0)
+        self.timer.timeout.connect(self.update_frame)
+        self.timer.start(10)
+
+    def stop_camera(self):
+        self.timer.stop()
+        if self.cap:
+            self.cap.release()
+            self.cap = None
+
+    def update_frame(self):
+        ret, frame = self.cap.read()
+        if ret:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            image = QImage(frame, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
+            self.label.setPixmap(QPixmap.fromImage(image))
 
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
@@ -62,7 +97,7 @@ class Ui_MainWindow(object):
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(10, 10, 541, 461))
-        self.label_img_path = u"VOCImgs-5/train/000001_jpg.rf.5bbdf1f628372225da1aa684234f6b4d.jpg"
+        self.label_img_path = u"BottleMaps/000003_jpg.rf.717a772246ebd76a5719aa5868950699.jpg"
         self.label.setPixmap(QPixmap(self.label_img_path))
         self.label.setScaledContents(True)
         self.tableWidget = QTableWidget(self.centralwidget)
@@ -85,6 +120,7 @@ class Ui_MainWindow(object):
         self.comboBox.setObjectName(u"comboBox")
         self.comboBox.setGeometry(QRect(30, 530, 151, 31))
         self.comboBox.setMaxVisibleItems(2)
+        self.comboBox.currentIndexChanged.connect(self.on_combobox_changed)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -110,8 +146,8 @@ class Ui_MainWindow(object):
         self.label.setText("")
         self.label_2.setText("")
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Compute", None))
-        self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Camera", None))
-        self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Image", None))
+        self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Image", None))
+        self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Camera", None))
 
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
