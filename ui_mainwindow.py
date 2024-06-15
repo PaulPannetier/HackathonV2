@@ -25,6 +25,7 @@ from singleton import singleton
 from predict import ImageDetector
 from PIL import Image, ImageDraw
 import cv2
+from PyQt5.QtWidgets import QApplication, QFileDialog
 
 
 @singleton
@@ -48,7 +49,7 @@ class Ui_MainWindow(object):
         draw = ImageDraw.Draw(pil_image)
 
         for res in results:
-            bottleMaps.add_waste(TiltedWasteData(res.x, res.y, res.type))
+            # bottleMaps.add_waste(TiltedWasteData(res.x, res.y, res.type))
             draw.rectangle((res.x - (res.width * 0.5), res.y - (res.height * 0.5), res.x + (res.width * 0.5), res.y + (res.height * 0.5)), fill=None, outline='red')
         
         bottleMaps.save_map()
@@ -88,9 +89,24 @@ class Ui_MainWindow(object):
             image = QImage(frame, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
             self.label.setPixmap(QPixmap.fromImage(image))
 
+    def on_open_image_down(self):
+        app = QApplication([]) #dont remove because Qt sucks
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        file_path, _ = QFileDialog.getOpenFileName(
+            None,
+            "Open Image",
+            os.getcwd(),
+            "Image Files(*.jpg;*.png)",
+            options=options
+        )
+
+        self.label_img_path = file_path
+        self.label.setPixmap(QPixmap(self.label_img_path))
+
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
-            MainWindow.setObjectName(u"MainWindow")
+            MainWindow.setObjectName(u"Béatrice")
         MainWindow.resize(1113, 727)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
@@ -142,7 +158,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("Béatrice", u"Béatrice", None))
         self.label.setText("")
         self.label_2.setText("")
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Compute", None))
@@ -150,6 +166,8 @@ class Ui_MainWindow(object):
         self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Camera", None))
 
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
+        open_image_menu = self.menuFile.addAction("Open Image")
+        open_image_menu.triggered.connect(self.on_open_image_down)
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
     # retranslateUi
 
