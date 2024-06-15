@@ -61,7 +61,6 @@ class Ui_MainWindow(object):
 
     def on_combobox_changed(self, index):
         current_text = self.comboBox.itemText(index)
-        #print(f"Current ComboBox item: {current_text}")
         if current_text == "Image":
             self.label.setPixmap(QPixmap(self.label_img_path))
             self.stop_camera()
@@ -116,9 +115,6 @@ class Ui_MainWindow(object):
         self.label_img_path = u"BottleMaps/000003_jpg.rf.717a772246ebd76a5719aa5868950699.jpg"
         self.label.setPixmap(QPixmap(self.label_img_path))
         self.label.setScaledContents(True)
-        self.tableWidget = QTableWidget(self.centralwidget)
-        self.tableWidget.setObjectName(u"tableWidget")
-        self.tableWidget.setGeometry(QRect(210, 480, 341, 192))
         self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setGeometry(QRect(570, 10, 531, 591))
@@ -134,7 +130,7 @@ class Ui_MainWindow(object):
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.setObjectName(u"comboBox")
-        self.comboBox.setGeometry(QRect(30, 530, 151, 31))
+        self.comboBox.setGeometry(QRect(240, 480, 151, 31))
         self.comboBox.setMaxVisibleItems(2)
         self.comboBox.currentIndexChanged.connect(self.on_combobox_changed)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -155,7 +151,6 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.comboBox.setCurrentIndex(0)
         QMetaObject.connectSlotsByName(MainWindow)
-    # setupUi
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("Béatrice", u"Béatrice", None))
