@@ -27,7 +27,7 @@ from PIL import Image, ImageDraw
 import cv2
 from PyQt5.QtWidgets import QApplication, QFileDialog
 
-style_buttons = "background-color:#b2babb;"
+style_buttons = "background-color:#b2babb;color:black;"
 
 @singleton
 class Ui_MainWindow(object):
@@ -122,7 +122,7 @@ class Ui_MainWindow(object):
         self.label_2.setPixmap(QPixmap(u"BottleMaps/maps.png"))
         self.label_2.setScaledContents(True)
         from BottleMaps.bottleMaps import bottleMaps
-        bottleMaps.save_map()
+        #bottleMaps.save_map()
         self.pushButton = QPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(310, 600, 205, 31))
@@ -136,6 +136,7 @@ class Ui_MainWindow(object):
         self.comboBox.currentIndexChanged.connect(self.on_combobox_changed)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
+        self.menubar.setStyleSheet(style_buttons)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 1113, 21))
         self.menuFile = QMenu(self.menubar)
