@@ -157,6 +157,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("Clean Me A River", u"Clean Me A River", None))
+        MainWindow.setWindowIcon(QIcon("icon.png"))
         MainWindow.setStyleSheet("background-color:#2c3e50;")
         self.label.setText("")
         self.label_2.setText("")

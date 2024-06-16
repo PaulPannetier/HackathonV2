@@ -59,6 +59,8 @@ class BottleMaps:
     data:BottleMapsData
 
     def __init__(self):
+        self.data = BottleMapsData([])
+        return
         try:
             json_file_path = os.path.join(os.getcwd(), "BottleMaps/TiltedWasteData.json")
             with open(json_file_path, 'r') as file:
