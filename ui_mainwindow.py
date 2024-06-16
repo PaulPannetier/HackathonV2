@@ -27,6 +27,7 @@ from PIL import Image, ImageDraw
 import cv2
 from PyQt5.QtWidgets import QApplication, QFileDialog
 
+style_buttons = "background-color:#b2babb;"
 
 @singleton
 class Ui_MainWindow(object):
@@ -147,22 +148,22 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
-        self.menuFile.setStyleSheet("background-color:#494b4a;")
-        self.menuAbout.setStyleSheet("background-color:#494b4a;")
+        self.menuFile.setStyleSheet(style_buttons)
+        self.menuAbout.setStyleSheet(style_buttons)
         self.retranslateUi(MainWindow)
         self.comboBox.setCurrentIndex(0)
         QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("Béatrice", u"Béatrice", None))
-        MainWindow.setStyleSheet("background-color:#0f0f53;")
+        MainWindow.setStyleSheet("background-color:#2c3e50;")
         self.label.setText("")
         self.label_2.setText("")
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Compute", None))
-        self.pushButton.setStyleSheet("background-color:#494b4a;")
+        self.pushButton.setStyleSheet(style_buttons)
         self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Image", None))
         self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Camera", None))
-        self.comboBox.setStyleSheet("background-color:#494b4a;")
+        self.comboBox.setStyleSheet(style_buttons)
 
         
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
