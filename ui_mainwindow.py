@@ -106,7 +106,7 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
-            MainWindow.setObjectName(u"Béatrice")
+            MainWindow.setObjectName(u"Clean Me A River")
         MainWindow.resize(1113, 727)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
@@ -155,7 +155,7 @@ class Ui_MainWindow(object):
         QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("Béatrice", u"Béatrice", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("Clean Me A River", u"Clean Me A River", None))
         MainWindow.setStyleSheet("background-color:#2c3e50;")
         self.label.setText("")
         self.label_2.setText("")
